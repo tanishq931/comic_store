@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "694854232527",
+    "project_id": "comic-store-57c5f",
+    "storage_bucket": "comic-store-57c5f.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:694854232527:android:2d3edcd4dadb4d5f5fcaba",
+        "android_client_info": {
+          "package_name": "com.comic.kisseKahani"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "694854232527-b6e605v46qsl0ukj8e9ml5ogv4cr7ni2.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.comic.kisseKahani",
+            "certificate_hash": "86a393940db958132aedcb37caa6de92676adf17"
+          }
+        },
+        {
+          "client_id": "694854232527-0tm644gfqbj9enga4t8rmap487nb6enn.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBJtPyaXFloHwIUIQZX_GSsB_WkP8wBSw8"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "694854232527-0tm644gfqbj9enga4t8rmap487nb6enn.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
