@@ -1,8 +1,6 @@
-import 'package:comic_store/Components/CustomButton.dart';
 import 'package:comic_store/Components/RowHeader.dart';
 import 'package:comic_store/Components/TopCarousel.dart';
 import 'package:comic_store/Screens/AllComics.dart';
-import 'package:comic_store/Screens/DetailsScreen.dart';
 import 'package:flutter/material.dart';
 
 class CategoryRow extends StatefulWidget {

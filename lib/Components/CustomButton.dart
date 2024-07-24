@@ -3,8 +3,9 @@ import 'package:flutter/material.dart';
 class CustomButton extends StatefulWidget {
   final Widget child;
   final VoidCallback onTap;
+  final bool disabled;
 
-  CustomButton({super.key, required this.child, required this.onTap});
+  const CustomButton({super.key, required this.child, required this.onTap,this.disabled=false});
 
   @override
   State<CustomButton> createState() => _CustomButtonState();
@@ -14,16 +15,20 @@ class _CustomButtonState extends State<CustomButton> {
   double _opacity = 1.0;
 
   void _onTapDown(TapDownDetails details) {
-    setState(() {
-      _opacity = 0.5;
-    });
+    if(!widget.disabled) {
+      setState(() {
+        _opacity = 0.5;
+      });
+    }
   }
 
   void _onTapUp(TapUpDetails details) {
-    setState(() {
-      _opacity = 1.0;
-    });
-    widget.onTap();
+    if(!widget.disabled) {
+      setState(() {
+        _opacity = 1.0;
+      });
+      widget.onTap();
+    }
   }
 
   void _onTapCancel() {

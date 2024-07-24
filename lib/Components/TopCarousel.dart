@@ -1,9 +1,12 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:comic_store/Components/CustomButton.dart';
+import 'package:comic_store/Screens/AllComics.dart';
 import 'package:comic_store/Screens/DetailsScreen.dart';
+import 'package:comic_store/provider/ComicProvider.dart';
 import 'package:dynamic_carousel_indicator/dynamic_carousel_indicator.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class TopCarousel extends StatefulWidget {
   final List items;
@@ -13,6 +16,7 @@ class TopCarousel extends StatefulWidget {
   final bool dots;
   final String imgKey;
   final String title;
+  final bool top;
   const TopCarousel(
       {super.key,
       required this.items,
@@ -21,7 +25,8 @@ class TopCarousel extends StatefulWidget {
       this.autoPlay = true,
       this.dots = false,
       this.imgKey = 'imgUrl',
-      this.title = ''});
+      this.title = '',
+      this.top = false});
   @override
   State<TopCarousel> createState() => TopCarouselState();
 }
@@ -35,27 +40,41 @@ class TopCarouselState extends State<TopCarousel> {
       children: [
         CarouselSlider(
             items: List.generate(list.length, (index) {
-              return CustomButton(
-                child: Container(
-                  margin: const EdgeInsets.symmetric(horizontal: 5),
-                  child: Hero(
-                    tag: '${list[index]['id']}${widget.title}',
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(10),
-                      child: CachedNetworkImage(
-                        imageUrl: list[index][widget.imgKey],
-                        fit: BoxFit.cover,
+              return Consumer<Comicprovider>(
+                builder: (context, value, child) {
+                  return CustomButton(
+                      child: Container(
+                        margin: const EdgeInsets.symmetric(horizontal: 5),
+                        child: Hero(
+                          tag: '${list[index]['id']}${widget.title}',
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(10),
+                            child: CachedNetworkImage(
+                              imageUrl: list[index][widget.imgKey],
+                              fit: BoxFit.cover,
+                            ),
+                            // child: Image.network(list[index]['imgUrl']),
+                          ),
+                        ),
                       ),
-                      // child: Image.network(list[index]['imgUrl']),
-                    ),
-                  ),
-                ),
-                onTap: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) =>
-                              DetailsScreen(bookDetails: list[index],tag:'${list[index]['id']}${widget.title}' ,)));
+                      onTap: () {
+                        if (!widget.top) {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => DetailsScreen(
+                                        bookDetails: list[index],
+                                        tag:
+                                            '${list[index]['id']}${widget.title}',
+                                      )));
+                        } else {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => Allcomics(
+                                      list: value.comics, title: 'Top Rated')));
+                        }
+                      });
                 },
               );
             }),

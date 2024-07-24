@@ -18,8 +18,12 @@ class _CategoriesState extends State<Categories> {
 
    return ListView.builder(
       itemBuilder: (context, i) {
+        List list  = List.from(provider.comics);
+        list.removeWhere((element){
+          return !element['characters'].contains(provider.characters[i]['id']);
+        });
         return CategoryRow(
-            list: provider.comics,
+            list:list,
             title: provider.characters[i]['name'], id: provider.characters[i]['id']);
       },
       itemCount: provider.characters.length ,
