@@ -1,8 +1,5 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:comic_store/Components/ComicGrid.dart';
 import 'package:comic_store/Components/CommonInput.dart';
-import 'package:comic_store/Components/CustomButton.dart';
-import 'package:comic_store/Screens/DetailsScreen.dart';
 import 'package:comic_store/provider/ComicProvider.dart';
 import 'package:comic_store/theme/TextStyles.dart';
 import 'package:flutter/material.dart';
