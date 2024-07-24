@@ -1,11 +1,6 @@
 import 'dart:async';
-
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:comic_store/provider/AuthProvider.dart';
-import 'package:comic_store/provider/ComicProvider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 
 class Splashscreen extends StatefulWidget {
   const Splashscreen({super.key});
@@ -21,7 +16,6 @@ class _SplashscreenState extends State<Splashscreen>
   late Animation animation;
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     Timer(const Duration(seconds: 2), () {
       Navigator.pushReplacementNamed(
@@ -47,7 +41,6 @@ class _SplashscreenState extends State<Splashscreen>
 
   @override
   void dispose() {
-    // TODO: implement dispose
     super.dispose();
     controller.dispose();
   }
