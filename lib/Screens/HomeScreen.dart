@@ -13,7 +13,6 @@ import 'package:comic_store/service/getComics.dart';
 import 'package:comic_store/service/getTopRatedComics.dart';
 import 'package:comic_store/theme/TextStyles.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_nav_bar/google_nav_bar.dart';
 import 'package:provider/provider.dart';
@@ -52,13 +51,12 @@ class _HomeScreenState extends State<HomeScreen> {
 
   void checkUser() async{
     if (auth.currentUser != null) {
-      final provider = Provider.of<UserProvider>(context, listen: false);
-      provider.setEmail(auth.currentUser!.email!);
+      final provider = Provider.of<UserProvider>(context,listen: false );
       final val = await FirebaseFirestore.instance
           .collection('users')
           .doc(auth.currentUser!.uid)
           .get();
-      provider.setIsAdmin(val['role']=='admin');
+      provider.setData(val);
     }
 
   }
@@ -72,13 +70,11 @@ class _HomeScreenState extends State<HomeScreen> {
     List comics = await getComics();
     List characters = await getCharacters();
     List topComics = await getTopRatedComics();
-    List? list = LocalStorage.retrieveList('favourites');
 
     var provider = Provider.of<Comicprovider>(context, listen: false);
     provider.setComics(comics);
     provider.setCharacters(characters);
     provider.setTopComics(topComics);
-    provider.setFavourites(list ?? []);
 
     setState(() {
       loading = false;
@@ -123,9 +119,9 @@ class _HomeScreenState extends State<HomeScreen> {
     }
 
     void logout() {
+      print('Here');
       FirebaseAuth.instance.signOut();
-      provider.setEmail('');
-      provider.setIsAdmin(false);
+      provider.clearData();
       Navigator.pushReplacementNamed(context, '/loginScreen');
     }
 

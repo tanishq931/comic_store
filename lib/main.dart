@@ -3,6 +3,7 @@ import 'package:comic_store/Screens/LoginScreen.dart';
 import 'package:comic_store/Screens/SplashScreen.dart';
 import 'package:comic_store/provider/AuthProvider.dart';
 import 'package:comic_store/provider/ComicProvider.dart';
+import 'package:comic_store/provider/DownloadProvider.dart';
 import 'package:comic_store/service/LocalStorage.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -36,7 +37,8 @@ class _MyAppState extends State<MyApp> {
     return MultiProvider(
         providers: [
           ChangeNotifierProvider(create: (_) => Comicprovider()),
-          ChangeNotifierProvider(create: (_) => UserProvider())
+          ChangeNotifierProvider(create: (_) => UserProvider()),
+          ChangeNotifierProvider(create: (_) => DownloadProvider()),
         ],
         child: MaterialApp(
           theme: ThemeData(scaffoldBackgroundColor: Colors.black),

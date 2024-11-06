@@ -8,10 +8,9 @@ import 'package:flutter_pdfview/flutter_pdfview.dart';
 import 'package:path_provider/path_provider.dart';
 
 class PDFScreen extends StatefulWidget {
-  final String url;
-  final String title;
+  final dynamic bookDetails;
 
-  const PDFScreen({super.key,required this.url,required this.title});
+  const PDFScreen({super.key,this.bookDetails=''  });
 
   @override
   State<PDFScreen> createState() => _PDFScreenState();
@@ -26,7 +25,7 @@ class _PDFScreenState extends State<PDFScreen> {
   @override
   void initState() {
     super.initState();
-    downloadPDF(widget.url).then((file) {
+    downloadPDF(widget.bookDetails['pdf']).then((file) {
       setState(() {
         pdfPath = file.path;
         isLoading = false;
@@ -41,7 +40,10 @@ class _PDFScreenState extends State<PDFScreen> {
       String suffix = url.split('/').last;
       String fileName = suffix.split('?').first;
       File file = File("${dir.path}/$fileName");
-      await dio.download(url, file.path);
+      if(!await file.exists()){
+        await dio.download(widget.bookDetails['banner'],"${dir.path}/${fileName}_Img");
+        await dio.download(url, file.path);
+      }
       return file;
     } catch (e) {
       throw Exception("Error downloading PDF file");
@@ -51,7 +53,7 @@ class _PDFScreenState extends State<PDFScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: CommonAppbar(title: widget.title),
+      appBar: CommonAppbar(title: widget.bookDetails['title']),
       body: isLoading
           ? const Center(child: CircularProgressIndicator())
           : Stack(

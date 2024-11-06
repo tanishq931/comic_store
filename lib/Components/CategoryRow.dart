@@ -36,6 +36,7 @@ class _CategoryRowState extends State<CategoryRow> {
           autoPlay: false,
           imgKey: 'banner',
           title: widget.title,
+          tag:widget.title,
 
         ),
       ],

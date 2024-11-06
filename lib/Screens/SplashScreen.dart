@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:comic_store/theme/TextStyles.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
@@ -56,7 +57,9 @@ class _SplashscreenState extends State<Splashscreen>
                 height: animation.value * 50,
                 width: animation.value * 300,
                 margin: const EdgeInsets.symmetric(horizontal: 20),
-                color: Colors.red)
+                color: Colors.red,
+                child: Center(child: Text('Comic Store',style: heading(size:animation.value * 24,weight: FontWeight.bold ),)),
+            )
           ],
         ),
       ),

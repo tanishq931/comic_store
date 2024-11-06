@@ -22,8 +22,7 @@ class _ComicGridState extends State<ComicGrid> {
           mainAxisSpacing: 10),
       itemBuilder: (context, index) {
         return Hero(
-          // tag: '${widget.list[index]['id']}',
-          tag: 'hello',
+          tag: '${widget.list[index]['id']}',
           child: CustomButton(
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(8),

@@ -17,6 +17,7 @@ class TopCarousel extends StatefulWidget {
   final String imgKey;
   final String title;
   final bool top;
+  final String tag;
   const TopCarousel(
       {super.key,
       required this.items,
@@ -26,7 +27,9 @@ class TopCarousel extends StatefulWidget {
       this.dots = false,
       this.imgKey = 'imgUrl',
       this.title = '',
-      this.top = false});
+      this.top = false,
+        this.tag=''
+      });
   @override
   State<TopCarousel> createState() => TopCarouselState();
 }
@@ -35,6 +38,7 @@ class TopCarouselState extends State<TopCarousel> {
   int index = 0;
   @override
   Widget build(BuildContext context) {
+    print(widget.tag);
     List list = widget.items;
     return Stack(
       children: [
@@ -46,14 +50,13 @@ class TopCarouselState extends State<TopCarousel> {
                       child: Container(
                         margin: const EdgeInsets.symmetric(horizontal: 5),
                         child: Hero(
-                          tag: '${list[index]['id']}${widget.title}',
+                          tag: '${widget.tag}${list[index]['id']}${widget.title}',
                           child: ClipRRect(
                             borderRadius: BorderRadius.circular(10),
                             child: CachedNetworkImage(
                               imageUrl: list[index][widget.imgKey],
                               fit: BoxFit.cover,
                             ),
-                            // child: Image.network(list[index]['imgUrl']),
                           ),
                         ),
                       ),
@@ -65,7 +68,7 @@ class TopCarouselState extends State<TopCarousel> {
                                   builder: (context) => DetailsScreen(
                                         bookDetails: list[index],
                                         tag:
-                                            '${list[index]['id']}${widget.title}',
+                                            '${widget.tag}${list[index]['id']}${widget.title}',
                                       )));
                         } else {
                           Navigator.push(

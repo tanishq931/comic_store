@@ -25,14 +25,19 @@ class _DetailsScreenState extends State<DetailsScreen> {
   @override
   Widget build(BuildContext context) {
     final provider = Provider.of<Comicprovider>(context);
+    final authProvider = Provider.of<UserProvider>(context);
+    bool isLiked = authProvider.favouritesList.contains(widget.bookDetails.id);
+
     Future<bool> onLikeButtonTapped(bool isLiked) async {
-      List<String> list = List.from(provider.favourites);
-      if (isLiked) {
-        list.remove(widget.bookDetails['id']);
-      } else {
-        list.add(widget.bookDetails['id']);
+      var firestore = FirebaseFirestore.instance.collection('users').doc(authProvider!.uid);
+      List list  = List.from(authProvider.favouritesList);
+      if(isLiked){
+         list.remove(widget.bookDetails.id);
+      }else{
+        list.add(widget.bookDetails.id);
       }
-      provider.setFavourites(list);
+      authProvider.setFavouritesList(list);
+      firestore.update({'favouritesList':list});
       return !isLiked;
     }
     final isAdmin = Provider.of<UserProvider>(context).isAdmin;
@@ -113,8 +118,7 @@ class _DetailsScreenState extends State<DetailsScreen> {
                           top: 5,
                           right: 10,
                           child: LikeButton(
-                              isLiked: provider.favourites
-                                  .contains(widget.bookDetails['id']),
+                              isLiked:isLiked ,
                               size: 30,
                               circleColor: const CircleColor(
                                   start: Colors.red, end: Colors.red),
@@ -252,10 +256,7 @@ class _DetailsScreenState extends State<DetailsScreen> {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                          builder: (context) => PDFScreen(
-                                url: widget.bookDetails['pdf'],
-                                title: widget.bookDetails['title'],
-                              )));
+                          builder: (context) => PDFScreen(bookDetails: widget.bookDetails)));
                 }),
           ],
         ),
