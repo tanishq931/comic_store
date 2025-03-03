@@ -38,7 +38,6 @@ class TopCarouselState extends State<TopCarousel> {
   int index = 0;
   @override
   Widget build(BuildContext context) {
-    print(widget.tag);
     List list = widget.items;
     return Stack(
       children: [
@@ -46,15 +45,16 @@ class TopCarouselState extends State<TopCarousel> {
             items: List.generate(list.length, (index) {
               return Consumer<Comicprovider>(
                 builder: (context, value, child) {
+                  var imgKey = widget.imgKey;
                   return CustomButton(
                       child: Container(
                         margin: const EdgeInsets.symmetric(horizontal: 5),
                         child: Hero(
-                          tag: '${widget.tag}${list[index]['id']}${widget.title}',
+                          tag: '${widget.tag}${list[index].id}${widget.title}',
                           child: ClipRRect(
                             borderRadius: BorderRadius.circular(10),
                             child: CachedNetworkImage(
-                              imageUrl: list[index][widget.imgKey],
+                              imageUrl:widget.top?list[index][imgKey]:list[index].banner,
                               fit: BoxFit.cover,
                             ),
                           ),
@@ -68,7 +68,7 @@ class TopCarouselState extends State<TopCarousel> {
                                   builder: (context) => DetailsScreen(
                                         bookDetails: list[index],
                                         tag:
-                                            '${widget.tag}${list[index]['id']}${widget.title}',
+                                            '${widget.tag}${widget.top?list[index]['id']:list[index].id}${widget.title}',
                                       )));
                         } else {
                           Navigator.push(

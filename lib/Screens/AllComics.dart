@@ -1,5 +1,6 @@
 import 'package:comic_store/Components/ComicGrid.dart';
 import 'package:comic_store/Components/CommonAppbar.dart';
+import 'package:comic_store/Utils/BaseLayout.dart';
 import 'package:flutter/material.dart';
 
 class Allcomics extends StatefulWidget {
@@ -14,11 +15,13 @@ class Allcomics extends StatefulWidget {
 class _AllcomicsState extends State<Allcomics> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-        appBar: CommonAppbar(title: widget.title),
-        body: Container(
-          margin: const EdgeInsets.all(10),
-          child: ComicGrid(list: widget.list),
-        ));
+    return BaseLayout(
+      child: Scaffold(
+          appBar: CommonAppbar(title: widget.title),
+          body: Container(
+            margin: const EdgeInsets.all(10),
+            child: ComicGrid(list: widget.list),
+          )),
+    );
   }
 }

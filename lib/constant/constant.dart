@@ -1,0 +1,1 @@
+var DOWNLOADED_COMICS = "downloadedComics";

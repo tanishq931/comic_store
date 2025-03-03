@@ -1,13 +1,15 @@
+import 'package:comic_store/Comic.dart';
+import 'package:comic_store/Screens/DownloadScreen.dart';
 import 'package:comic_store/Screens/HomeScreen.dart';
 import 'package:comic_store/Screens/LoginScreen.dart';
 import 'package:comic_store/Screens/SplashScreen.dart';
 import 'package:comic_store/provider/AuthProvider.dart';
 import 'package:comic_store/provider/ComicProvider.dart';
+import 'package:comic_store/provider/ConnectivityProvider.dart';
 import 'package:comic_store/provider/DownloadProvider.dart';
 import 'package:comic_store/service/LocalStorage.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:hive_flutter/hive_flutter.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:provider/provider.dart';
@@ -17,10 +19,9 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   final appDocumentDir = await getApplicationDocumentsDirectory();
   await Hive.initFlutter(appDocumentDir.path);
+  Hive.registerAdapter(ComicAdaptor());
   await LocalStorage.initHive();
-
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
-  await dotenv.load(fileName: ".env");
   runApp(const MyApp());
 }
 
@@ -39,6 +40,7 @@ class _MyAppState extends State<MyApp> {
           ChangeNotifierProvider(create: (_) => Comicprovider()),
           ChangeNotifierProvider(create: (_) => UserProvider()),
           ChangeNotifierProvider(create: (_) => DownloadProvider()),
+          ChangeNotifierProvider(create: (_) => ConnectivityProvider()),
         ],
         child: MaterialApp(
           theme: ThemeData(scaffoldBackgroundColor: Colors.black),
@@ -46,6 +48,7 @@ class _MyAppState extends State<MyApp> {
             '/': (context) => const Splashscreen(),
             '/loginScreen': (context) => const LoginScreen(),
             '/homeScreen': (context) => const HomeScreen(),
+            '/downloadScreen': (context) => const DownloadScreen(),
           },
           debugShowCheckedModeBanner: false,
         ));

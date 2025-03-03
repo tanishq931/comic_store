@@ -4,31 +4,6 @@ import 'package:comic_store/Components/RowHeader.dart';
 import 'package:comic_store/theme/TextStyles.dart';
 import 'package:flutter/material.dart';
 
-// class PopularCharacters extends StatefulWidget {
-//   final String title;
-//   final List characters;
-//   final bool showButton;
-//   final VoidCallback? onTap;
-//   const PopularCharacters(
-//       {super.key,
-//       required this.title,
-//       required this.characters,
-//       this.showButton = true,
-//       this.onTap});
-//
-//   @override
-//   State<PopularCharacters> createState() => _PopularCharactersState();
-// }
-//
-// class _PopularCharactersState extends State<PopularCharacters> {
-//   @override
-//   Widget build(BuildContext context) {
-//     final provider = Provider.of<Comicprovider>(context);
-//
-//     return
-//   }
-// }
-
 Widget PopularCharacters(
     {String title = '', bool showButton = true, List? characters,var onTap}) {
   return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
@@ -64,7 +39,7 @@ Widget PopularCharacters(
                   ]),
                 ),
                 onTap: () {
-                  onTap!(i);
+                  onTap(i);
                 });
           },
           itemCount: characters!.length),

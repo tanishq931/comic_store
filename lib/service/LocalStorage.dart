@@ -4,10 +4,10 @@ class LocalStorage {
   static Box? _box;
 
   static Future<void> initHive() async {
-    _box = await Hive.openBox('myBox');
+    _box = await Hive.openBox('comics');
   }
 
-  static Future<void> storeList(String key, List<dynamic> list) async {
+  static Future<void> storeList(String key, List list) async {
     await _box?.put(key, list);
   }
 

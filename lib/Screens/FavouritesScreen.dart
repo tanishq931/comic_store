@@ -13,25 +13,27 @@ class FavouritesScreen extends StatefulWidget {
 }
 
 class _FavouritesScreenState extends State<FavouritesScreen> {
-
   @override
   Widget build(BuildContext context) {
     final provider = Provider.of<Comicprovider>(context);
     final authProvider = Provider.of<UserProvider>(context);
 
-    List getList(){
+    List getList() {
       List list = List.from(provider.comics);
-      list.removeWhere((val){
-        return !authProvider.favouritesList.contains(val['id']);
+      list.removeWhere((val) {
+        return !authProvider.favouritesList.contains(val.id);
       });
       return list;
     }
 
-    return
-      authProvider.favouritesList.isNotEmpty
-        ? ComicGrid(list: getList()):
-          Center(
-      child: Text('No comic in favourites',style: heading(),)
-    );
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 20),
+        child: authProvider.favouritesList.isNotEmpty
+            ? ComicGrid(list: getList())
+            : Center(
+                child: Text(
+                'No comic in favourites',
+                style: heading(),
+              )));
   }
 }

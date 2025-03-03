@@ -3,6 +3,6 @@ import 'package:google_fonts/google_fonts.dart';
 
 TextStyle heading(
     {Color color = Colors.white, FontWeight weight = FontWeight.normal,double size=16}) {
-  return GoogleFonts.poppins(
+  return GoogleFonts.montserrat(
       color: color, textStyle: TextStyle(fontWeight: weight,fontSize: size));
 }

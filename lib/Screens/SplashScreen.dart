@@ -1,7 +1,9 @@
 import 'dart:async';
+import 'package:comic_store/Utils/BaseLayout.dart';
 import 'package:comic_store/theme/TextStyles.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:internet_connection_checker_plus/internet_connection_checker_plus.dart';
 
 class Splashscreen extends StatefulWidget {
   const Splashscreen({super.key});
@@ -15,9 +17,21 @@ class _SplashscreenState extends State<Splashscreen>
   FirebaseAuth auth = FirebaseAuth.instance;
   late AnimationController controller;
   late Animation animation;
+  StreamSubscription? _internetSubscriber;
+
   @override
   void initState() {
     super.initState();
+    _internetSubscriber = InternetConnection().onStatusChange.listen((InternetStatus status){
+      switch (status) {
+        case InternetStatus.connected:
+        // The internet is now connected
+          break;
+        case InternetStatus.disconnected:
+        // The internet is now disconnected
+          break;
+      }
+    });
     Timer(const Duration(seconds: 2), () {
       Navigator.pushReplacementNamed(
           context, auth.currentUser != null ? '/homeScreen' : '/loginScreen');
@@ -37,30 +51,32 @@ class _SplashscreenState extends State<Splashscreen>
 
     controller.forward();
 
-    // animation =
   }
 
   @override
   void dispose() {
     super.dispose();
     controller.dispose();
+    _internetSubscriber?.cancel();
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Container(
-                height: animation.value * 50,
-                width: animation.value * 300,
-                margin: const EdgeInsets.symmetric(horizontal: 20),
-                color: Colors.red,
-                child: Center(child: Text('Comic Store',style: heading(size:animation.value * 24,weight: FontWeight.bold ),)),
-            )
-          ],
+    return BaseLayout(
+      child: Scaffold(
+        body: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Container(
+                  height: animation.value * 50,
+                  width: animation.value * 300,
+                  margin: const EdgeInsets.symmetric(horizontal: 20),
+                  color: Colors.red,
+                  child: Center(child: Text('Comic Store',style: heading(size:animation.value * 24,weight: FontWeight.bold ),)),
+              )
+            ],
+          ),
         ),
       ),
     );

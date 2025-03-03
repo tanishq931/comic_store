@@ -21,7 +21,7 @@ class _SearchScreenState extends State<SearchScreen> {
     List getList(){
       List list  = List.from(provider.comics);
       list.removeWhere((val){
-        return !val['title'].toLowerCase().contains(searchText.text.toLowerCase());
+        return !val?.title.toLowerCase().contains(searchText.text.toLowerCase());
       });
       return list;
     }

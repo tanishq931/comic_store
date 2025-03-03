@@ -15,7 +15,7 @@ class UserProvider extends ChangeNotifier {
     _email=data['email'];
     _uid=data['id'];
     _isAdmin = data['role']=='ADMIN';
-    _favouritesList = favouritesList;
+    _favouritesList = data['favouritesList'];
     notifyListeners();
   }
   void setFavouritesList(List list){
@@ -27,7 +27,5 @@ class UserProvider extends ChangeNotifier {
     _email='';
     _uid='';
     _favouritesList=[];
-
-
   }
 }

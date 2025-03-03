@@ -1,12 +1,17 @@
+import 'dart:async';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:comic_store/Components/CommonAppbar.dart';
-import 'package:comic_store/Components/CustomButton.dart';
+import 'package:comic_store/Components/DrawerRow.dart';
 import 'package:comic_store/Screens/AddScreen.dart';
 import 'package:comic_store/Screens/FavouritesScreen.dart';
 import 'package:comic_store/Screens/ListingScreen.dart';
 import 'package:comic_store/Screens/SearchScreen.dart';
+import 'package:comic_store/Utils/BaseLayout.dart';
+import 'package:comic_store/constant/constant.dart';
 import 'package:comic_store/provider/AuthProvider.dart';
 import 'package:comic_store/provider/ComicProvider.dart';
+import 'package:comic_store/provider/DownloadProvider.dart';
 import 'package:comic_store/service/LocalStorage.dart';
 import 'package:comic_store/service/getCharacters.dart';
 import 'package:comic_store/service/getComics.dart';
@@ -46,7 +51,16 @@ class _HomeScreenState extends State<HomeScreen> {
     super.initState();
     fetchData();
     checkUser();
+    fetchDownloadedComics();
+  }
 
+  void fetchDownloadedComics(){
+     List list = LocalStorage.retrieveList(DOWNLOADED_COMICS) ?? [];
+       DownloadProvider provider = Provider.of<DownloadProvider>(
+           context, listen: false);
+       Timer(const Duration(seconds: 2),(){
+         provider.setComicList(list);
+       });
   }
 
   void checkUser() async{
@@ -75,10 +89,10 @@ class _HomeScreenState extends State<HomeScreen> {
     provider.setComics(comics);
     provider.setCharacters(characters);
     provider.setTopComics(topComics);
-
     setState(() {
       loading = false;
     });
+
   }
 
   List<GButton> getTabs(isAdmin) {
@@ -119,7 +133,6 @@ class _HomeScreenState extends State<HomeScreen> {
     }
 
     void logout() {
-      print('Here');
       FirebaseAuth.instance.signOut();
       provider.clearData();
       Navigator.pushReplacementNamed(context, '/loginScreen');
@@ -153,91 +166,94 @@ class _HomeScreenState extends State<HomeScreen> {
       });
     }
 
-    return Scaffold(
-      appBar: CommonAppbar(
-        title: screenTitle[tabIndex],
-      ),
-      backgroundColor: Colors.black,
-      drawer: tabIndex == 0
-          ? Drawer(
-              child: Container(
-                padding: const EdgeInsets.symmetric(horizontal: 10),
-                color: Colors.black,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Expanded(
-                        flex: 1,
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.end,
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            CircleAvatar(
-                              radius: 50,
-                              backgroundColor: Colors.grey,
-                            ),
-                            const SizedBox(height: 20),
-                            Text(
-                              provider.email,
-                              style: heading(),
-                            ),
-                            const SizedBox(height: 10),
-                          ],
-                        )),
-                    const Divider(
-                      height: 2,
-                      color: Colors.white,
-                    ),
-                    Expanded(
-                        flex: 3,
-                        child: Container(
-                          padding: const EdgeInsets.only(top: 20),
-                          child: Column(
-                            children: [
-                              CustomButton(
-                                onTap: () {
-                                  showLogoutAlert();
-                                },
-                                child: Row(
-                                  children: [
-                                    const Icon(
-                                      Icons.logout,
-                                      color: Colors.white,
-                                    ),
-                                    const SizedBox(width: 8),
-                                    Text(
-                                      'Logout',
-                                      style: heading(),
-                                    )
-                                  ],
-                                ),
-                              )
-                            ],
-                          ),
-                        )),
-                  ],
-                ),
-              ),
-            )
-          : null,
-      body: loading
-          ? const Center(
-              child: CircularProgressIndicator(
-                color: Colors.white,
-              ),
-            )
-          : screens[tabIndex],
-      bottomNavigationBar: GNav(
-        padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 20),
-        tabs: getTabs(isAdmin),
-        activeColor: Colors.blue,
-        onTabChange: (value) {
-          setState(() {
-            tabIndex = value;
-          });
+    final List drawerRows = [
+      {
+        "title":"Logout",
+        "icon":Icons.logout,
+        "onTap":(){
+          showLogoutAlert();
         },
-        textStyle: heading(),
-        haptic: true,
+      },
+      {
+        "title":"Downloaded Comics",
+        "icon":Icons.add_rounded,
+        "onTap":(){
+          Navigator.pushNamed(context, "/downloadScreen");
+        },
+      },
+    ];
+
+    return BaseLayout(
+      child: Scaffold(
+        appBar: CommonAppbar(
+          title: screenTitle[tabIndex],
+        ),
+        backgroundColor: Colors.black,
+        drawer: tabIndex == 0
+            ? Drawer(
+                child: Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 10),
+                  color: Colors.black,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Expanded(
+                          flex: 1,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              const CircleAvatar(
+                                radius: 50,
+                                backgroundColor: Colors.grey,
+                              ),
+                              const SizedBox(height: 20),
+                              Text(
+                                provider.email,
+                                style: heading(),
+                              ),
+                              const SizedBox(height: 10),
+                            ],
+                          )),
+                      const Divider(
+                        height: 2,
+                        color: Colors.white,
+                      ),
+                      Expanded(
+                          flex: 3,
+                          child: Container(
+                            padding: const EdgeInsets.only(top: 20),
+                            child: Column(
+                              spacing: 16,
+                              children:drawerRows.map((val){
+                                return DrawerRow(title: val['title'], onTap: val['onTap'], icon:val['icon']);
+                              }).toList()
+                            ),
+                          )),
+                    ],
+                  ),
+                ),
+              )
+            : null,
+        body: loading
+            ? const Center(
+                child: CircularProgressIndicator(
+                  color: Colors.white,
+                ),
+              )
+            : screens[tabIndex],
+        bottomNavigationBar: GNav(
+          padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 20),
+          tabs: getTabs(isAdmin),
+          activeColor: Colors.blue,
+          onTabChange: (value) {
+            setState(() {
+              tabIndex = value;
+            });
+          },
+          textStyle: heading(),
+          haptic: true,
+        ),
       ),
     );
   }

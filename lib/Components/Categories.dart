@@ -20,7 +20,7 @@ class _CategoriesState extends State<Categories> {
       itemBuilder: (context, i) {
         List list  = List.from(provider.comics);
         list.removeWhere((element){
-          return !element['characters'].contains(provider.characters[i]['id']);
+          return !element.characters?.contains(provider.characters[i]['id']);
         });
         return CategoryRow(
             list:list,

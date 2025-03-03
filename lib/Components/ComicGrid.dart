@@ -18,17 +18,17 @@ class _ComicGridState extends State<ComicGrid> {
       gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
           maxCrossAxisExtent: 140,
           crossAxisSpacing: 10,
-          mainAxisExtent: 160,
+          mainAxisExtent: 150,
           mainAxisSpacing: 10),
       itemBuilder: (context, index) {
         return Hero(
-          tag: '${widget.list[index]['id']}',
+          tag: widget.list[index].id ,
           child: CustomButton(
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(8),
                 child: CachedNetworkImage(
-                  imageUrl: widget.list[index]['banner'],
-                  fit: BoxFit.cover,
+                  imageUrl: widget.list[index].banner,
+                  fit: BoxFit.fill,
                 ),
               ),
               onTap: () {
@@ -38,7 +38,7 @@ class _ComicGridState extends State<ComicGrid> {
                         builder: (context) => DetailsScreen(
                             bookDetails: widget.list[index],
                             tag:
-                            '${widget.list[index]['id']}')
+                            widget.list[index].id)
                     )
                 );
               }),

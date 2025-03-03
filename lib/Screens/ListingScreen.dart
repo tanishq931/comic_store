@@ -21,40 +21,38 @@ class _ListingScreenState extends State<ListingScreen> {
     Colors.purple,
     Colors.blue
   ];
-
   @override
   Widget build(BuildContext context) {
     final provider = Provider.of<Comicprovider>(context);
     return Scaffold(
-
-      body: SingleChildScrollView(
-          child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 10),
-        child: Column(
-          children: [
-            TopCarousel(
-              items: provider.topRated,
-              dots: true,
-              top: true,
-            ),
-            PopularCharacters(
-                title: 'Popular Characters',
-                characters: provider.characters,
-                onTap: (i) {
-                  Navigator.push(context, MaterialPageRoute(builder: (context) {
-                    List list = List.from(provider.comics);
-                    list.removeWhere((element) {
-                      return !element['characters']
-                          .contains(provider.characters[i]['id']);
-                    });
-                    return Allcomics(
-                        list: list, title: provider.characters[i]['name']);
-                  }));
-                }),
-            const Categories()
-          ],
-        ),
-      )),
-    );
+        body: SingleChildScrollView(
+            child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 10),
+          child: Column(
+            children: [
+              TopCarousel(
+                items: provider.topRated,
+                dots: true,
+                top: true,
+              ),
+              PopularCharacters(
+                  title: 'Popular Characters',
+                  characters: provider.characters,
+                  onTap: (i) {
+                    Navigator.push(context, MaterialPageRoute(builder: (context) {
+                      List list = List.from(provider.comics);
+                      list.removeWhere((element) {
+                        return !element?.characters
+                            .contains(provider.characters[i].id);
+                      });
+                      return Allcomics(
+                          list: list, title: provider.characters[i]['name']);
+                    }));
+                  }),
+              const Categories()
+            ],
+          ),
+        )),
+      );
   }
 }
